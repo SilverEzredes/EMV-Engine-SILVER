@@ -1,8 +1,8 @@
 --EMV_Engine by alphaZomega
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.5" --July 15, 2024
+local  version = "2.0.6-SILVER | October 31, 2024"
 
---Fixed bug with Chain Groups not showing for via.motion.chain
+-- "Fixed" a handful of issues with MHWilds
 
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
@@ -167,8 +167,13 @@ local static_funcs = {
 	guid_method = sdk.find_type_definition("via.gui.message"):get_method("get"),
 	mk_gameobj = sdk.find_type_definition("via.GameObject"):get_method("create(System.String)"),
 	mk_gameobj_w_fld = sdk.find_type_definition("via.GameObject"):get_method("create(System.String, via.Folder)"),
-	string_hashing_method = sdk.find_type_definition("via.murmur_hash"):get_method("calc32"),
 }
+-- SILVER: Fix for MHWilds `via.murmur_hash` lacks the calc32 method so grabbing it from via.xx_hash
+if reframework.get_game_name() == "mhwilds" then
+	static_funcs.string_hashing_method = sdk.find_type_definition("via.xx_hash"):get_method("calc32(System.String)")
+else
+	static_funcs.string_hashing_method = sdk.find_type_definition("via.murmur_hash"):get_method("calc32")
+end
 
 --Convert a float to a byte, meant for colors:
 static_funcs.convert_color_float_to_byte = function(flt)
@@ -5926,7 +5931,7 @@ local function read_field(parent_managed_object, field, prop, name, return_type,
 		else
 			imgui.text(display_name .. "		nil")
 		end
-	elseif values_type == "number" or values_type == "boolean" or return_type:is_primitive() then
+	elseif values_type == "number" or values_type == "boolean" then --or return_type:is_primitive() then -- SILVER: Had to disable the is_primitive check
 		if return_type:is_a("System.Single") then
 			changed, value = imgui.drag_float(display_name, value, vd.increment, -100000.0, 100000.0)
 		elseif return_type:is_a("System.Boolean") then
