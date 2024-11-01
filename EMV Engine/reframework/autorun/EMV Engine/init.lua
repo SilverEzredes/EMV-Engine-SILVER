@@ -1,8 +1,8 @@
 --EMV_Engine by alphaZomega
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.6-SILVER | October 31, 2024"
+local  version = "2.0.61-SILVER | November 01, 2024"
 
--- "Fixed" a handful of issues with MHWilds
+-- Re-enabled functions using the is_primitive method.
 
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
@@ -5931,7 +5931,7 @@ local function read_field(parent_managed_object, field, prop, name, return_type,
 		else
 			imgui.text(display_name .. "		nil")
 		end
-	elseif values_type == "number" or values_type == "boolean" then --or return_type:is_primitive() then -- SILVER: Had to disable the is_primitive check
+	elseif values_type == "number" or values_type == "boolean" or return_type:is_primitive() then
 		if return_type:is_a("System.Single") then
 			changed, value = imgui.drag_float(display_name, value, vd.increment, -100000.0, 100000.0)
 		elseif return_type:is_a("System.Boolean") then
