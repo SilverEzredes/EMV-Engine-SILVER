@@ -9,6 +9,7 @@ This is a repository of my RE Engine Lua script mods, for use with [praydog](htt
 * Resident Evil 3 Remake
 * Resident Evil 4 Remake
 * Monster Hunter Rise: Sunbreak
+* Monster Hunter Wilds
 * Street Fighter 6
 * Ghosts n' Goblins Resurrection
 * Apollo Justice: Ace Attorney Trilogy
