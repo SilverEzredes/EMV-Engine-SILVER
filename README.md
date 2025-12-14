@@ -14,6 +14,7 @@ This is a repository of my RE Engine Lua script mods, for use with [praydog](htt
 * Ghosts n' Goblins Resurrection
 * Apollo Justice: Ace Attorney Trilogy
 * Dragon's Dogma 2
+* Pragmata
 
 ### Requirements
 * [REFramework](https://github.com/praydog/REFramework-nightly/releases)
