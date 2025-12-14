@@ -1,6 +1,6 @@
---EMV_Engine by alphaZomega
+--EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.61-SILVER | November 01, 2024"
+local  version = "2.0.62-SILVER | December 14, 2025"
 
 -- Re-enabled functions using the is_primitive method.
 
@@ -8,6 +8,7 @@ local  version = "2.0.61-SILVER | November 01, 2024"
 --Global variables --------------------------------------------------------------------------------------------------------------------------
 _G["is" .. reframework.get_game_name():sub(1, 3):upper()] = true --sets up the "isRE2", "isRE3" etc boolean
 BitStream = require("EMV Engine/Bitstream")
+murmur3 = require("EMV Engine/murmur3")
 
 _data = {}				--Tables used for indexing REManagedObjects, RETransforms, SystemArrays and ValueTypes
 metadata_methods = {}		--Cached table of functions, fields, etc ("propdata") for each type definition, indexed by full typedef name
@@ -168,10 +169,8 @@ local static_funcs = {
 	mk_gameobj = sdk.find_type_definition("via.GameObject"):get_method("create(System.String)"),
 	mk_gameobj_w_fld = sdk.find_type_definition("via.GameObject"):get_method("create(System.String, via.Folder)"),
 }
--- SILVER: Fix for MHWilds `via.murmur_hash` lacks the calc32 method so grabbing it from via.xx_hash
-if reframework.get_game_name() == "mhwilds" then
-	static_funcs.string_hashing_method = sdk.find_type_definition("via.xx_hash"):get_method("calc32(System.String)")
-else
+-- SILVER: Fix for MHWilds and Pragmata as `via.murmur_hash` lacks the calc32 method
+if reframework.get_game_name() ~= ("pragmata" or "mhwilds" or "re4") then
 	static_funcs.string_hashing_method = sdk.find_type_definition("via.murmur_hash"):get_method("calc32")
 end
 
@@ -2295,8 +2294,15 @@ end
 
 --Turn a string into a murmur3 hash -------------------------------------------------------------------------------------------------------------
 hashing_method = function(str) 
-	if type(str) == "string" and tonumber(str) == nil then
-		return static_funcs.string_hashing_method:call(nil, str)
+	-- SILVER: I won't even being to claim that I know how hashing works, mostly based it on this repo https://github.com/tkaemming/lua-murmurhash3
+	if reframework.get_game_name() == ("pragmata" or "mhwilds" or "re4") then
+    	if type(str) == "string" and tonumber(str) == nil then
+        	return murmur3.calc32(str)
+		end
+	else
+		if type(str) == "string" and tonumber(str) == nil then
+			return static_funcs.string_hashing_method:call(nil, str)
+		end
 	end
 	return tonumber(str)
 end
