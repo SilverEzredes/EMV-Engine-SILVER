@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.63-SILVER | December 23, 2025"
+local  version = "2.0.64-SILVER | December 23, 2025"
 
 -- Re-enabled functions using the is_primitive method.
 
@@ -2295,7 +2295,7 @@ end
 --Turn a string into a murmur3 hash -------------------------------------------------------------------------------------------------------------
 hashing_method = function(str) 
 	-- SILVER: I won't even being to claim that I know how hashing works, based it on this repo https://github.com/tkaemming/lua-murmurhash3 and used some tests from here to verify: https://en.wikipedia.org/wiki/MurmurHash
-	if reframework.get_game_name() == ("pragmata" or "mhwilds") then
+	if (reframework.get_game_name() == "pragmata") or (reframework.get_game_name() == "mhwilds") then
     	if type(str) == "string" and tonumber(str) == nil then
         	return murmur3.calc32(str)
 		end
