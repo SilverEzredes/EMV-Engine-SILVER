@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.62-SILVER | December 14, 2025"
+local  version = "2.0.63-SILVER | December 23, 2025"
 
 -- Re-enabled functions using the is_primitive method.
 
@@ -170,7 +170,7 @@ local static_funcs = {
 	mk_gameobj_w_fld = sdk.find_type_definition("via.GameObject"):get_method("create(System.String, via.Folder)"),
 }
 -- SILVER: Fix for MHWilds and Pragmata as `via.murmur_hash` lacks the calc32 method (or any methods for the record)
-if reframework.get_game_name() ~= ("pragmata" or "mhwilds") then
+if (reframework.get_game_name() ~= "pragmata") and (reframework.get_game_name() ~= "mhwilds") then
 	static_funcs.string_hashing_method = sdk.find_type_definition("via.murmur_hash"):get_method("calc32")
 end
 
