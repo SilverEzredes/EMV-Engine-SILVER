@@ -1,6 +1,6 @@
 --RE Engine Console Script by alphaZomega
 --Adds an interactive lua REPL / Console to REFramework
---June 29, 2023
+--December 24, 2025 
 
 --if true then return end
 --EMV local functions and tables:
@@ -204,7 +204,7 @@ end
 
 --Displays the History.history of past console commands and their results as a table:
 local function show_history(do_minimal, new_first_history_idx)
-	
+	imgui.push_font(EMVFont)
 	if next(History.history) then
 		
 		if SettingsCache.use_child_windows or do_minimal then 
@@ -223,9 +223,9 @@ local function show_history(do_minimal, new_first_history_idx)
 				imgui.same_line()
 				imgui.set_next_item_width(1920)
 				if do_multiline then
-					changed, command = imgui.input_text_multiline(" ", command)
+					changed, command = imgui.input_text_multiline("##MultiLineInputText00", command)
 				else
-					changed, command = imgui.input_text(" ", command)
+					changed, command = imgui.input_text("##SingleLineInputText00", command)
 				end
 				
 				if imgui.begin_popup_context_item("Ctx") then
@@ -309,38 +309,41 @@ local function show_history(do_minimal, new_first_history_idx)
 	end
 	
 	if not do_minimal then 
-		if imgui.button("Enter") then 
+		if imgui.button("Enter") then
 			force_command = true
 		end
 		imgui.same_line()
 		imgui.push_id(1234)
-			if imgui.button(" ") then 
+			if imgui.button("  ") then
 				force_autocomplete = true
-			end 
+			end
 		imgui.pop_id()
 		imgui.same_line()
 		imgui.set_next_item_width(1920)
 		
+		
 		if do_multiline then
-			changed, command = imgui.input_text_multiline(" ", command)
+			changed, command = imgui.input_text_multiline("##MultiLineInputText01", command)
 		else
-			changed, command = imgui.input_text(" ", command)
+			changed, command = imgui.input_text("##SingleLineInputText01", command)
 		end
+		
 		
 		if imgui.begin_popup_context_item("ctx") then
-			if imgui.menu_item(do_multiline and "Single-line" or "Multi-line") then 
+			if imgui.menu_item(do_multiline and "Single-line" or "Multi-line") then
 				do_multiline = not do_multiline
-			end 
-			imgui.end_popup() 
+			end
+			imgui.end_popup()
 		end
 		
-		if not SettingsCache.use_child_windows then 
+		if not SettingsCache.use_child_windows then
 			--imgui.text(History.command_output)
 			pcall(function()
 				imgui.text(logv(History.command_output, nil, 1))
 			end)
 		end
 	end
+	imgui.pop_font()
 	
 	return #History.history_idx+1
 end
