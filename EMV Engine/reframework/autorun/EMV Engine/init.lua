@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.64-SILVER | December 23, 2025"
+local  version = "2.0.65-SILVER | December 24, 2025"
 
 -- Re-enabled functions using the is_primitive method.
 
@@ -83,8 +83,8 @@ SettingsCache = {
 		},
 	}
 }
-
-local font = imgui.load_font('NotoSansSC-Bold.otf', imgui.get_default_font_size()+2, {
+-- SILVER: Made this into a global so we can access it in the console to have proper font scaling
+EMVFont = imgui.load_font('NotoSansSC-Bold.otf', imgui.get_default_font_size() + 2, {
     0x0020, 0x00FF, -- Basic Latin + Latin Supplement
     0x2000, 0x206F, -- General Punctuation
     0x3000, 0x30FF, -- CJK Symbols and Punctuations, Hiragana, Katakana
@@ -767,12 +767,16 @@ local function search(search_term, case_sensitive, as_dict)
 	if result and result.get_elements then 
 		local term = not case_sensitive and search_term:lower() or search_term
 		for i, element in ipairs(result:get_elements()) do
-			local name = not case_sensitive and get_GameObject(element, true):lower() or get_GameObject(element, true)
-			if name:find(term) then 
-				if as_dict then 
-					search_results[element] = element
-				else
-					table.insert(search_results, element)
+			local ok, name = pcall(function()
+				return not case_sensitive and get_GameObject(element, true):lower() or get_GameObject(element, true)
+			end)
+			if name and ok then
+				if name:find(term) then 
+					if as_dict then
+						search_results[element] = element
+					else
+						table.insert(search_results, element)
+					end
 				end
 			end
 		end
@@ -1353,7 +1357,7 @@ read_imgui_pairs_table = function(tbl, key, is_array, editable)
 	key = key or tbl
 	editable = editable or ((editable~= false) and SettingsCache.show_editable_tables)
 	local edit_args = (editable and type(editable)=="table") and editable
-	imgui.push_font(font)
+	imgui.push_font(EMVFont)
 	
 	if true then --not SettingsCache.always_update_lists then
 		
@@ -6737,7 +6741,7 @@ function imgui.managed_object_control_panel(m_obj, key_name, field_name)
 		--key_name = o_tbl.key_hash or key_name
 		
 		imgui.push_id(key_name)
-		imgui.push_font(font)
+		imgui.push_font(EMVFont)
 		imgui.begin_rect()
 		
 			imgui.begin_rect()	
