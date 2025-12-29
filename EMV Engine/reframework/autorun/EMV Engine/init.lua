@@ -1,9 +1,9 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.65-SILVER | December 24, 2025"
+local  version = "2.0.66-SILVER | December 29, 2025"
 
--- Re-enabled functions using the is_primitive method.
-
+-- Fixed an Imgui IDX issue with Hooked Method Inspector
+-- Fixed yet another nil value issue. (Ridog)
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
 _G["is" .. reframework.get_game_name():sub(1, 3):upper()] = true --sets up the "isRE2", "isRE3" etc boolean
@@ -6753,7 +6753,7 @@ function imgui.managed_object_control_panel(m_obj, key_name, field_name)
 					end
 					imgui.tooltip("Update the fields and properties of this class")
 					imgui.same_line()
-					imgui_changed, o_tbl.keep_updating = imgui.checkbox("", SettingsCache.objs_to_update[o_tbl.name_full])
+					imgui_changed, o_tbl.keep_updating = imgui.checkbox("##KeepUpdatingCheckbox", SettingsCache.objs_to_update[o_tbl.name_full])
 					imgui.tooltip("Keep updating all control panels of this class every frame")
 					if imgui_changed then 
 						SettingsCache.objs_to_update[o_tbl.name_full] = o_tbl.keep_updating
@@ -9057,7 +9057,11 @@ GameObject = {
 				elseif isRE8 then
 					o.mesh_name_short = o.mesh_name_short:sub(1, 8) --7
 				else
-					o.mesh_name_short = o.mesh_name_short:sub(1, 6) 
+					if o.mesh_name_short then
+						o.mesh_name_short = o.mesh_name_short:sub(1, 6)
+					else
+						o.mesh_name_short = o.mesh_name
+					end
 				end
 				o.mesh_name_short = o.mesh_name_short:lower()
 				GameObject.set_materials(o) 
