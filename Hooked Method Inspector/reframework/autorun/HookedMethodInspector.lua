@@ -1,5 +1,5 @@
 --RE Engine Hooked Method Inspector for REFramework
---v1.00, March 1 2024
+local version = "v1.01-SILVER | December 29 2025"
 --By alphaZomega
 --Gives information about method calls in RE Engine games
 --Gets the first or final time a method is called during a frame, then caches which module that call was made during and what args it used
@@ -594,13 +594,11 @@ re.on_draw_ui(function()
 		local submitted = imgui.button("Hook Method")
 		tooltip("Analyze this method")
 		imgui.same_line()
-		imgui.set_next_item_width(2000)
 		changed, hook_method_text = imgui.input_text("Method", hook_method_text)
 		
 		local removed = imgui.button("Clear Method")
 		tooltip("Remove this method from the script's method history")
 		imgui.same_line()
-		imgui.set_next_item_width(2000)
 		options.prev_hooks = options.prev_hooks or {}
 		changed, options.prev_hook_idx = imgui.combo("Previous Methods", options.prev_hook_idx, options.prev_hooks)
 		tooltip("Previously analyzed methods")
@@ -755,7 +753,6 @@ re.on_draw_ui(function()
 					
 					changed, method_tbl.use_pre_code = imgui.checkbox("Use pre-function hook", method_tbl.use_pre_code)
 					tooltip("You are passed 'args' like a typical pre-hook function")
-					imgui.set_next_item_width(1920)
 					changed, method_tbl.pre_code = imgui.input_text_multiline("Hook code (Pre-function)", method_tbl.pre_code, 500)
 					if changed then method_tbl.use_pre_code = false end
 					if method_tbl.error_txt_pre then
@@ -766,7 +763,6 @@ re.on_draw_ui(function()
 					
 					changed, method_tbl.use_post_code = imgui.checkbox("Use post-function hook", method_tbl.use_post_code)
 					tooltip("You are passed 'retval' like a typical post-hook function")
-					imgui.set_next_item_width(1920)
 					changed, method_tbl.post_code = imgui.input_text_multiline("Hook code (Post-function)", method_tbl.post_code, 500)
 					if changed then method_tbl.use_post_code = false end
 					if method_tbl.error_txt_post then
@@ -807,8 +803,9 @@ re.on_draw_ui(function()
 				imgui.tree_pop()
 			end
 		end
-		
-		imgui.text("												v1.00 By alphaZomega")
+		imgui.indent()
+		imgui.text(version .." | By alphaZomega")
+		imgui.unindent()
 		imgui.end_rect(0)
 		imgui.end_rect(1)
 		imgui.tree_pop()
