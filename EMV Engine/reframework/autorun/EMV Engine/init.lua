@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.66-SILVER | December 29, 2025"
+local  version = "2.0.67-SILVER |  January 03, 2026"
 
 -- Fixed an Imgui IDX issue with Hooked Method Inspector
 -- Fixed yet another nil value issue. (Ridog)
@@ -7794,7 +7794,7 @@ end
 
 --Displays the "Collection" menu in imgui
 local function show_collection()
-	
+	imgui.push_font(EMVFont)
 	local dump_collection
 	cd = SettingsCache.Collection_data
 	
@@ -8430,7 +8430,7 @@ local function show_collection()
 	if do_reset then 
 		cd = deep_copy(default_SettingsCache.Collection_data)
 	end
-	
+	imgui.pop_font()
 	SettingsCache.Collection_data = cd or SettingsCache
 end
 
