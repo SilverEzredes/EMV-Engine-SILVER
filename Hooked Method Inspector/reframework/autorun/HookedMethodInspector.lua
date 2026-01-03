@@ -1,5 +1,5 @@
 --RE Engine Hooked Method Inspector for REFramework
-local version = "v1.01-SILVER | December 29 2025"
+local modVersion = "v1.02-SILVER | January 03, 2026"
 --By alphaZomega
 --Gives information about method calls in RE Engine games
 --Gets the first or final time a method is called during a frame, then caches which module that call was made during and what args it used
@@ -590,7 +590,8 @@ re.on_draw_ui(function()
 		
 		imgui.begin_rect()
 		imgui.begin_rect()
-		
+		imgui.spacing()
+		imgui.indent(5)
 		local submitted = imgui.button("Hook Method")
 		tooltip("Analyze this method")
 		imgui.same_line()
@@ -600,8 +601,9 @@ re.on_draw_ui(function()
 		tooltip("Remove this method from the script's method history")
 		imgui.same_line()
 		options.prev_hooks = options.prev_hooks or {}
-		changed, options.prev_hook_idx = imgui.combo("Previous Methods", options.prev_hook_idx, options.prev_hooks)
+		changed, options.prev_hook_idx = imgui.combo("Previous Methods ", options.prev_hook_idx, options.prev_hooks)
 		tooltip("Previously analyzed methods")
+		imgui.spacing()
 		
 		if changed then
 			hook_method_text = options.prev_hooks[options.prev_hook_idx]
@@ -803,8 +805,7 @@ re.on_draw_ui(function()
 				imgui.tree_pop()
 			end
 		end
-		imgui.indent()
-		imgui.text(version .." | By alphaZomega")
+		imgui.text(modVersion .." | By alphaZomega")
 		imgui.unindent()
 		imgui.end_rect(0)
 		imgui.end_rect(1)
