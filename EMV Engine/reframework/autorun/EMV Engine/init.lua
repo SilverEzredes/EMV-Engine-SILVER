@@ -1,9 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.67-SILVER |  January 03, 2026"
-
--- Fixed an Imgui IDX issue with Hooked Method Inspector
--- Fixed yet another nil value issue. (Ridog)
+local  version = "2.0.68-SILVER |  January 21, 2026"
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
 _G["is" .. reframework.get_game_name():sub(1, 3):upper()] = true --sets up the "isRE2", "isRE3" etc boolean
@@ -7473,6 +7470,19 @@ local Material = {
 			saved_mats[self.anim_object.name_w_parent].active = true
 		end
 	end,
+	-- SILVER: Yeah I'm lazy but it works
+	save_material_reece_json = function(self)
+		if SettingsCache.remember_materials then 
+			saved_mats[self.anim_object.name_w_parent] = saved_mats[self.anim_object.name_w_parent] or {m={}, mesh=self.anim_object.mpaths.mesh_path, mdf=self.anim_object.mpaths.mdf2_path}
+			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name] = saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name] or {}
+			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name] = saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name] or {texs={}, vars={}, toggled=self.on}
+			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name].vars = {self.variable_names, self.variables}
+			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name].texs = self.textures
+			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name].toggled = self.on
+			saved_mats[self.anim_object.name_w_parent].active = true
+		end
+	end,
+
 	
 	update = function(self)
 		
@@ -7534,6 +7544,16 @@ show_imgui_mats = function(anim_object)
 				end
 				json.dump_file("EMV_Engine\\Saved_Materials\\" .. anim_object.name_w_parent .. ".json", jsonify_table(saved_mats[anim_object.name_w_parent]))
 			end
+			imgui.same_line()
+			imgui.push_style_color(0, 0xFFF5D442)
+			if imgui.button("Save Materials to REECE JSON") then 
+				for i, mat in ipairs(anim_object.materials) do
+					mat:save_material_reece_json()
+				end
+				local nativesMDF = anim_object.mesh:get_Material():ToString():match(".*/([^/]+)%.mdf2")
+				json.dump_file("usercontent\\materials\\" .. nativesMDF .. ".json", jsonify_table(saved_mats[anim_object.name_w_parent]))
+			end
+			imgui.pop_style_color()
 		imgui.end_rect(3)
 		if anim_object.mesh_name and saved_mats[anim_object.name_w_parent] and not imgui.same_line() and imgui.button(next(saved_mats[anim_object.name_w_parent].m) and "Clear New Defaults" or "[Cleared]") then 
 			reset_material_settings(anim_object)
