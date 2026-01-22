@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.68-SILVER |  January 21, 2026"
+local  version = "2.0.69-SILVER |  January 22, 2026"
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
 _G["is" .. reframework.get_game_name():sub(1, 3):upper()] = true --sets up the "isRE2", "isRE3" etc boolean
@@ -7470,17 +7470,15 @@ local Material = {
 			saved_mats[self.anim_object.name_w_parent].active = true
 		end
 	end,
-	-- SILVER: Yeah I'm lazy but it works
 	save_material_reece_json = function(self)
-		if SettingsCache.remember_materials then 
-			saved_mats[self.anim_object.name_w_parent] = saved_mats[self.anim_object.name_w_parent] or {m={}, mesh=self.anim_object.mpaths.mesh_path, mdf=self.anim_object.mpaths.mdf2_path}
-			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name] = saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name] or {}
-			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name] = saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name] or {texs={}, vars={}, toggled=self.on}
-			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name].vars = {self.variable_names, self.variables}
-			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name].texs = self.textures
-			saved_mats[self.anim_object.name_w_parent].m[self.anim_object.mesh_name][self.name].toggled = self.on
-			saved_mats[self.anim_object.name_w_parent].active = true
+		saved_mats[self.anim_object.name_w_parent] = saved_mats[self.anim_object.name_w_parent] or {m={}}
+		saved_mats[self.anim_object.name_w_parent].m[self.name] = saved_mats[self.anim_object.name_w_parent].m[self.name] or {}
+		local vars = {}
+		for i, name in ipairs(self.variable_names) do
+			vars[name] = self.variables[i]
 		end
+
+		saved_mats[self.anim_object.name_w_parent].m[self.name] = vars
 	end,
 
 	
