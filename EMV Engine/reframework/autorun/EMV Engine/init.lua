@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.69-SILVER |  January 22, 2026"
+local  version = "2.0.70-SILVER |  January 24, 2026"
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
 _G["is" .. reframework.get_game_name():sub(1, 3):upper()] = true --sets up the "isRE2", "isRE3" etc boolean
@@ -7552,6 +7552,7 @@ show_imgui_mats = function(anim_object)
 				json.dump_file("usercontent\\materials\\" .. nativesMDF .. ".json", jsonify_table(saved_mats[anim_object.name_w_parent]))
 			end
 			imgui.pop_style_color()
+			imgui.tooltip("Save the current material parameters to reframework\\data\\usercontent\\materials\\")
 		imgui.end_rect(3)
 		if anim_object.mesh_name and saved_mats[anim_object.name_w_parent] and not imgui.same_line() and imgui.button(next(saved_mats[anim_object.name_w_parent].m) and "Clear New Defaults" or "[Cleared]") then 
 			reset_material_settings(anim_object)
