@@ -1,6 +1,6 @@
 --EMV_Engine by alphaZomega | Kept on life support by SilverEzredes
 --Console, imgui and support classes and functions for REFramework
-local  version = "2.0.73-SILVER |  June 3, 2026"
+local  version = "2.0.74-SILVER | September 9, 2026"
 
 --Global variables --------------------------------------------------------------------------------------------------------------------------
 _G["is" .. reframework.get_game_name():sub(1, 3):upper()] = true --sets up the "isRE2", "isRE3" etc boolean
@@ -173,7 +173,8 @@ local games_missing_murmur_hash = {
     mhwilds = true,
     mhstories3 = true,
     re9 = true,
-    onimusha_wots = true
+    onimusha_wots = true,
+	dd2 = true
 }
 
 if not games_missing_murmur_hash[reframework.get_game_name()] then
